@@ -46,9 +46,7 @@ const MONGO = {
     DB_CLUSTER: process.env.DB_CLUSTER
 };
 
-//const mongoUrl = `${MONGO.DB_HOST}://${MONGO.DB_USER}:${MONGO.DB_PASS}@${MONGO.DB_NAME}/${MONGO.DB_CLUSTER}?retryWrites=true&w=majority`;
-const mongoUrl = "mongodb+srv://aliciagomezg:dWBNxeCLpPNPF7ua@bdd.9ymcp.mongodb.net/ITESO?retryWrites=true&w=majority&appName=BDD";
-
+const mongoUrl = `${MONGO.DB_HOST}://${MONGO.DB_USER}:${MONGO.DB_PASS}@${MONGO.DB_CLUSTER}/${MONGO.DB_NAME}?retryWrites=true&w=majority`;
 
 const port = process.env.PORT || 3000;
 

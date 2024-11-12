@@ -1,0 +1,27 @@
+name: Security Tests
+
+# Evento que activa el workflow
+on:
+  push:
+    branches:
+      - main  # Ejecuta el workflow en cada push a la rama main
+  pull_request: # También ejecuta el workflow en cada pull request
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest  # Usa un runner de Ubuntu para el workflow
+
+    steps:
+    - name: Check out the code
+      # Clona el repositorio actual para que esté disponible en las siguientes acciones
+      uses: actions/checkout@v2
+
+    - name: Set up Docker
+      # Configura Docker para el entorno de GitHub Actions
+      uses: docker/setup-buildx-action@v1
+
+    - name: Run Arachni Fuzzing
+      # Ejecuta Arachni para realizar fuzzing en la aplicación web en el puerto 3000
+      # Arachni guardará el reporte en el directorio de salida especificado
+      run: |
+        docker run --rm -v $(pwd):/output arachni/arachni http://localhost:3000 --output /output/arachni-report.afr

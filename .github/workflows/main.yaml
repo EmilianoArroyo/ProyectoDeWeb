@@ -3,38 +3,49 @@ name: CyberMusik
 on:
   push:
     branches:
-      - main  # Ejecutar cuando haya un push a la rama principal (main)
+      - main  # Solo se despliega desde la rama principal
 
 jobs:
   build:
     runs-on: ubuntu-latest
     
     steps:
-      # 1. Checkout el código del repositorio
+      # 1. Checkout el código
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2. Configurar Node.js en la versión deseada
+      # 2. Configurar Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20.17.0'  # Asegúrate de usar la versión que usas en tu proyecto
+          node-version: '20.17.0'
 
       # 3. Instalar dependencias
       - name: Install dependencies
         run: |
           npm install
 
-      # 4. Crear archivo .env para las variables de entorno
+      # 4. Realizar escaneo de seguridad
+      - name: Run npm audit
+        run: |
+          npm audit --audit-level=high
+
+      # 5. Ejecutar ESLint
+      # Para detectar vulnerabilidades, malas prácticas y código no deseado antes de desplegarlo
+      - name: Run ESLint
+        run: |
+          npm run lint
+
+      # 6. Configurar variables de entorno
       - name: Set up environment variables
         run: |
           echo "mongoUrl=${{ secrets.mongoUrl }}" >> .env
-          echo "PORT=3000" >> .env  
+          echo "PORT=3000" >> .env
 
-      # 5. Desplegar en Render
+      # 7. Desplegar a Render
       - name: Deploy to Render
         uses: render-examples/deploy-to-render@v1
         with:
           render_token: ${{ secrets.RENDER_API_KEY }}
-          service_name: 'CyberMusik'  # Nombre del servicio en Render
-          branch: 'main'  # Nombre de la rama a desplegar
+          service_name: 'CyberMusik'
+          branch: 'main'
