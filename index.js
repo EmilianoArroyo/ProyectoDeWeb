@@ -46,7 +46,9 @@ const MONGO = {
     DB_INST: process.env.DB_INST
 };
 
-const mongoUrl = `${MONGO.DB_HOST}://${MONGO.DB_USER}:${MONGO.DB_PASS}@${MONGO.DB_NAME}/${MONGO.DB_INST}?retryWrites=true&w=majority`;
+// const mongoUrl = `${MONGO.DB_HOST}://${MONGO.DB_USER}:${MONGO.DB_PASS}@${MONGO.DB_NAME}/${MONGO.DB_INST}?retryWrites=true&w=majority`;
+const mongoUrl = "mongodb+srv://aliciagomezg:dWBNxeCLpPNPF7ua@bdd.9ymcp.mongodb.net/ITESO?retryWrites=true&w=majority&appName=BDD";
+
 
 const port = process.env.PORT || 3000;
 
@@ -76,3 +78,4 @@ app.get('/', (req, res) => {
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, './public/views/errors/404.html'));
   });
+
