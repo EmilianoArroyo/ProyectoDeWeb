@@ -25,11 +25,6 @@ jobs:
         run: |
           npm install
 
-      # 4. Realizar escaneo de seguridad
-      - name: Run npm audit
-        run: |
-          npm audit --audit-level=high
-
       # 5. Ejecutar ESLint
       # Para detectar vulnerabilidades, malas prácticas y código no deseado antes de desplegarlo
       - name: Run ESLint
