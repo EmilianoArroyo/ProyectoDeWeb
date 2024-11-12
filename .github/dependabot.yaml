@@ -1,7 +1,20 @@
-# Mantener las dependencias seguras
+# .github/dependabot.yml
 version: 2
 updates:
+  # Docker dependencies
+  - package-ecosystem: "docker"
+    directory: "/"  # Root directory if your Dockerfile is here
+    schedule:
+      interval: "weekly"  # Check for updates once a week
+
+  # GitHub Actions dependencies
+  - package-ecosystem: "github-actions"
+    directory: "/"  # Dependabot will scan the whole repo for workflows
+    schedule:
+      interval: "weekly"
+
+  # Node.js dependencies
   - package-ecosystem: "npm"
-    directory: "/"
+    directory: "/"  # Adjust based on where your package.json is
     schedule:
       interval: "weekly"
