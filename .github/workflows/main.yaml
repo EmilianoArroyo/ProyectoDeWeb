@@ -3,44 +3,47 @@ name: CyberMusik
 on:
   push:
     branches:
-      - main  # Solo se despliega desde la rama principal
+      - main  # Only deploy from the main branch
 
 jobs:
   build:
     runs-on: ubuntu-latest
     
     steps:
-      # 1. Checkout el código
+      # 1. Check out the code
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2. Configurar Node.js
+      # 2. Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20.17.0'
 
-      # 3. Instalar dependencias
+      # 3. Install dependencies
       - name: Install dependencies
-        run: |
-          npm install
+        run: npm install
 
-      # 5. Ejecutar ESLint
-      # Para detectar vulnerabilidades, malas prácticas y código no deseado antes de desplegarlo
+      # 4. Run ESLint for code quality checks
       - name: Run ESLint
-        run: |
-          npm run lint
+        run: npm run lint
 
-      # 6. Configurar variables de entorno
+      # 5. Set up environment variables securely
       - name: Set up environment variables
+        env:
+          mongoUrl: ${{ secrets.mongoUrl }}
         run: |
-          echo "mongoUrl=${{ secrets.mongoUrl }}" >> .env
+          echo "mongoUrl=$mongoUrl" >> .env
           echo "PORT=3000" >> .env
 
-      # 7. Desplegar a Render
+      # 6. Deploy to Render via API
       - name: Deploy to Render
-        uses: render-examples/deploy-to-render@v1
-        with:
-          render_token: ${{ secrets.RENDER_API_KEY }}
-          service_name: 'CyberMusik'
-          branch: 'main'
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer $RENDER_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"serviceId": "srv-cspda056l47c73es4t8g"}' \
+            https://api.render.com/v1/services/srv-cspda056l47c73es4t8g/deploys
+
