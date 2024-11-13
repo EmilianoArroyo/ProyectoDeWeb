@@ -12,7 +12,7 @@ jobs:
 
     services:
       web:
-        image: app-image:latest  # Use the built image
+        image: app-image:latest  # Assuming this is your application image
         ports:
           - 3000:3000
         options: >
@@ -29,12 +29,13 @@ jobs:
     - name: Set up Docker
       uses: docker/setup-buildx-action@v1
 
-    - name: Build Docker image
+    - name: Build Docker image for the web app
       run: |
         docker build -t app-image:latest .
 
     - name: Run Arachni Fuzzing
       run: |
+        # Run Arachni against the running web service
         docker run --rm -v $(pwd):/output arachni/arachni arachni http://web:3000 --output /output/arachni-report.afr
 
     - name: Upload scan report
@@ -42,3 +43,4 @@ jobs:
       with:
         name: arachni-report
         path: arachni-report.afr
+
