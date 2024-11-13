@@ -12,11 +12,11 @@ jobs:
 
     services:
       web:
-        image: arachni/arachni:latest  # Assuming this is your application image
+        image: app-image:latest  # Your application image
         ports:
-          - 3000:3000
+          - 9292:9292  # Ensure this matches the port the app is exposing
         options: >
-          --health-cmd="curl -f http://localhost:3000 || exit 1"
+          --health-cmd="curl -f http://localhost:9292 || exit 1"
           --health-interval=10s
           --health-retries=3
           --health-timeout=5s
@@ -35,12 +35,11 @@ jobs:
 
     - name: Run Arachni Fuzzing
       run: |
-        # Run Arachni against the running web service
-        docker run --rm -v $(pwd):/output arachni/arachni arachni http://web:3000 --output /output/arachni-report.afr
+        # Run Arachni fuzzing on the /d/users/sign_in endpoint of the web service
+        docker run --rm -v $(pwd):/output arachni/arachni arachni http://web:9292/d/users/sign_in --output /output/arachni-report.afr
 
     - name: Upload scan report
       uses: actions/upload-artifact@v3
       with:
         name: arachni-report
         path: arachni-report.afr
-
