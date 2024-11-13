@@ -12,7 +12,7 @@ jobs:
 
     services:
       web:
-        image: app-image:latest  # Assuming this is your application image
+        image: arachni/arachni:latest  # Assuming this is your application image
         ports:
           - 3000:3000
         options: >
