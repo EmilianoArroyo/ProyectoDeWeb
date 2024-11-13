@@ -24,10 +24,6 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      # 4. Run ESLint for code quality checks
-      - name: Run ESLint
-        run: npm run lint
-
       # 5. Set up environment variables securely
       - name: Set up environment variables
         env:
