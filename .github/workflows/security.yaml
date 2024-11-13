@@ -38,7 +38,7 @@ jobs:
         docker run --rm -v $(pwd):/output arachni/arachni arachni http://web:3000 --output /output/arachni-report.afr
 
     - name: Upload scan report
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: arachni-report
         path: arachni-report.afr
