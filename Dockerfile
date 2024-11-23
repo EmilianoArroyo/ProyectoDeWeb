@@ -9,6 +9,11 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     gnupg \
     chromium-driver \
+    libxml2-dev \
+    libxslt-dev \
+    zlib1g-dev \
+    libcurl4-openssl-dev \
+    libssl-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # Instalar Google Chrome
@@ -17,11 +22,15 @@ RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.d
     && apt-get -f install -y \
     && rm google-chrome-stable_current_amd64.deb
 
-# Instalar Arachni y sus dependencias
-RUN gem install arachni bundler webrick
+# Clonar Arachni y configurar su entorno
+RUN git clone https://github.com/Arachni/arachni.git /opt/arachni
+
+# Cambiar al directorio de Arachni y instalar dependencias
+WORKDIR /opt/arachni
+RUN bundle install
 
 # Configurar la ruta para que Arachni pueda encontrar `chromedriver` y `google-chrome`
-ENV PATH=$PATH:/usr/lib/chromium-browser/
+ENV PATH=$PATH:/opt/arachni/bin:/usr/lib/chromium-browser/
 
 # Exponer el puerto que Arachni necesita (si es necesario para tu aplicación)
 EXPOSE 9292
@@ -29,6 +38,7 @@ EXPOSE 9292
 # Establecer el directorio de trabajo
 WORKDIR /opt/arachni
 
-# Ejecutar Arachni con el comando deseado
+# Comando por defecto para ejecutar Arachni
 CMD ["arachni"]
+
 
