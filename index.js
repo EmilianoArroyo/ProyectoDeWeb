@@ -138,16 +138,6 @@ app.use(cors({
   }
 }));
 
-// Rate Limiting - Allow 100 requests per IP every hour
-const limiter = rateLimit({
-  windowMs: 60 * 60 * 1000,  // 1 hour in milliseconds
-  max: 100,  // Limit each IP to 100 requests per windowMs (1 hour)
-  message: 'Too many requests from this IP, please try again later.'
-});
-
-// Apply rate limiting to all routes
-app.use(limiter);
-
 app.use(express.json());
 // Data sanitization against NoSQL query injection
 app.use(mongoSanitize());
