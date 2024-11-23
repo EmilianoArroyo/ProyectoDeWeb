@@ -26,14 +26,15 @@ const app = express();
 // app.use(cors(corsOptions));
 
 // Configure CORS to only allow specific origins
-const allowedOrigins = ['localhost:3000', 'https://cybermusik.onrender.com'];
+const allowedOrigins = ['https://cybermusik.onrender.com'];
 
 app.use(cors({
   origin: function (origin, callback) {
-    if (allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
+    // If origin is in allowedOrigins, grant access, otherwise deny it
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);  // Allow request
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(new Error('Not allowed by CORS'));  // Deny request
     }
   }
 }));
