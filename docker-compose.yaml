@@ -1,0 +1,14 @@
+services:
+  web:
+    image: custom-arachni
+    ports:
+      - "9293:9292"  # Cambia el puerto si es necesario
+    command: "arachni http://172.18.0.2:9292"
+
+  arachni:
+    image: arachni/arachni
+    ports:
+      - "9294:9292"
+    environment:
+      - "RAILS_ENV=production"
+    command: "/usr/local/arachni/bin/arachni_web -s puma -p 9292 -o 0.0.0.0"  # Ejecutar arachni_web con las opciones correctas
