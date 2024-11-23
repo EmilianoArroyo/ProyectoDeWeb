@@ -14,6 +14,10 @@ jobs:
     - name: Check out the code
       uses: actions/checkout@v2
 
+    - name: Build Arachni Docker Image
+      run: |
+        docker build -t custom-arachni .  # Build your custom Arachni image from the Dockerfile
+
     - name: Run Arachni Fuzzing
       run: |
         # Run Arachni fuzzing on the /d/users/sign_in endpoint of the web service
@@ -24,4 +28,5 @@ jobs:
       with:
         name: arachni-report
         path: arachni-report.afr
+
 
