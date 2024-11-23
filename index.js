@@ -126,12 +126,12 @@ const fileUpload = require('express-fileupload');
 
 const app = express();
 
-// Setup rate limiting to prevent brute force attacks
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,  // 15 minutes
-  max: 100,  // limit each IP to 100 requests per windowMs
-  message: 'Too many requests from this IP, please try again later.'
-});
+// // Setup rate limiting to prevent brute force attacks
+// const limiter = rateLimit({
+//   windowMs: 15 * 60 * 1000,  // 15 minutes
+//   max: 100,  // limit each IP to 100 requests per windowMs
+//   message: 'Too many requests from this IP, please try again later.'
+// });
 
 app.use(limiter);
 
