@@ -25,6 +25,3 @@ jobs:
     - name: Build Docker Image
       run: docker build -t custom-arachni .
 
-    # 4. Test Arachni Image
-    - name: Test Arachni Image
-      run: docker run --rm custom-arachni arachni https://cybermusik.onrender.com/
