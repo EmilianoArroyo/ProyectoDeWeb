@@ -133,7 +133,7 @@ const app = express();
 //   message: 'Too many requests from this IP, please try again later.'
 // });
 
-app.use(limiter);
+//app.use(limiter);
 
 // Configure CORS to allow specific origins
 const allowedOrigins = ['https://cybermusik.onrender.com'];
