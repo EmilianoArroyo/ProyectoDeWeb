@@ -1,6 +1,6 @@
 FROM ruby:3.0
 
-# Actualizar los repositorios y instalar dependencias necesarias
+# Actualizar repositorios e instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
     wget \
     curl \
@@ -10,25 +10,23 @@ RUN apt-get update && apt-get install -y \
     chromium-driver \
     && rm -rf /var/lib/apt/lists/*
 
-# Instalar Google Chrome
-RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-    && dpkg -i google-chrome-stable_current_amd64.deb \
-    && apt-get -f install -y \
-    && rm google-chrome-stable_current_amd64.deb
+# Agregar el repositorio oficial de Google Chrome
+RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
+    && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list' \
+    && apt-get update \
+    && apt-get install -y google-chrome-stable
 
 # Instalar Arachni y sus dependencias
 RUN gem install arachni bundler webrick
 
-# Configurar la ruta para que Arachni pueda encontrar `chromedriver` y `google-chrome`
-ENV PATH=$PATH:/usr/lib/chromium-browser/
-
-# Exponer el puerto que Arachni necesita (si es necesario para tu aplicación)
-EXPOSE 9292
+# Configurar PATH para Chrome y Chromedriver
+ENV PATH="/usr/lib/chromium-browser/:/usr/bin:$PATH"
 
 # Establecer el directorio de trabajo
 WORKDIR /opt/arachni
 
-# Ejecutar Arachni con el comando deseado
+# Exponer el puerto (opcional)
+EXPOSE 9292
+
+# Comando predeterminado
 CMD ["arachni"]
-
-
