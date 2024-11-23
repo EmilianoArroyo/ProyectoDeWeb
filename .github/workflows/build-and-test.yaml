@@ -4,22 +4,27 @@ on:
   push:
     branches:
       - main
+  pull_request:
 
 jobs:
   build-test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out the code
-        uses: actions/checkout@v2
+    # 1. Check out the code (actualizado a v3)
+    - name: Check out the repository
+      uses: actions/checkout@v3  # Actualiza a la versión más reciente
 
-      - name: Set up Docker
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y docker.io
+    # 2. Set up Docker
+    - name: Set up Docker
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y docker.io docker-compose
 
-      - name: Build Docker Image
-        run: docker build -t custom-arachni .
+    # 3. Build Docker Image
+    - name: Build Docker Image
+      run: docker build -t custom-arachni .
 
-      - name: Test Arachni Image
-        run: docker run --rm custom-arachni arachni http://example.com
+    # 4. Test Arachni Image
+    - name: Test Arachni Image
+      run: docker run --rm custom-arachni arachni https://cybermusik.onrender.com/
