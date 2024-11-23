@@ -1,27 +1,30 @@
-# Use a base image with Ruby (Arachni is Ruby-based)
 FROM ruby:3.0
 
 # Install dependencies
-RUN apt-get update -qq && apt-get install -y \
+RUN apt-get update && apt-get install -y \
   build-essential \
-  libpcap-dev \
   libsqlite3-dev \
+  libxml2-dev \
+  libxslt1-dev \
   libssl-dev \
   libreadline-dev \
-  libpcap-dev \
   zlib1g-dev \
-  git \
   && rm -rf /var/lib/apt/lists/*
 
-# Install Arachni
-RUN git clone https://github.com/Arachni/arachni.git /opt/arachni \
-  && cd /opt/arachni && bundle install
+# Install Ruby dependencies
+RUN gem install bundler
 
-# Set the working directory to /opt/arachni
+# Install the missing 'webrick' gem explicitly
+RUN gem install webrick
+
+# Clone Arachni repository
+RUN git clone https://github.com/Arachni/arachni.git /opt/arachni
+
+# Install Arachni dependencies
+RUN cd /opt/arachni && bundle install
+
+# Set working directory to Arachni
 WORKDIR /opt/arachni
 
-# Expose the necessary ports if required
-EXPOSE 9292
-
 # Run Arachni
-CMD ["bin/arachni", "http://web:9292/d/users/sign_in"]
+CMD ["ruby", "bin/arachni"]
