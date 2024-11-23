@@ -27,6 +27,8 @@ jobs:
 
     - name: Run Arachni Fuzzing
       run: |
+        # Ensure the Arachni Docker image is pulled
+        docker pull arachni/arachni
         # Run Arachni fuzzing on the /d/users/sign_in endpoint of the web service
         docker run --rm -v $(pwd):/output custom-arachni http://web:9292/d/users/sign_in --output /output/arachni-report.afr
 
@@ -35,3 +37,15 @@ jobs:
       with:
         name: arachni-report
         path: ./arachni-report.afr
+<<<<<<< HEAD
+=======
+
+    - name: Fail if vulnerabilities found
+      run: |
+        if [ -s ./arachni-report.afr ]; then
+          echo "Security issues detected! Please check the Arachni report."
+          exit 1
+        else
+          echo "No security issues detected."
+        fi
+>>>>>>> f171b7483e412797b264f29e199e620dec443fae
