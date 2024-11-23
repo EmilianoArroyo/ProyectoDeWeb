@@ -204,7 +204,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Redirect root to the external index page
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, './public/index.html')); // Apunta al archivo de inicio directamente
+  res.sendFile(path.join(__dirname, './public/views/index/index.html')); // Apunta al archivo de inicio directamente
 });
 
 // Catch-all route for 404 errors
