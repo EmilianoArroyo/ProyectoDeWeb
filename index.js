@@ -14,19 +14,44 @@ const usersRoutes = require('./src/routes/usersRoutes');
 const usersartistRoutes = require('./src/routes/artists&usersRoutes');
 const Usuario = require('./src/models/usersModel');
 const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
 
 const app = express();
 
-const corsOptions = {
-    origin: '*', 
-    optionsSuccessStatus: 200
-  };
+// const corsOptions = {
+//     origin: '*', 
+//     optionsSuccessStatus: 200
+//   };
   
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+
+// Configure CORS to only allow specific origins
+const allowedOrigins = ['localhost:3000', 'https://cybermusik.onrender.com'];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  }
+}));
 
 app.use(express.json());
 // Data sanitization against NoSQL query injection
 app.use(mongoSanitize());
+
+// Enable HSTS (Strict Transport Security)
+app.use(helmet.hsts({
+    maxAge: 31536000,          // 1 year in seconds
+    includeSubDomains: true,   // Apply to subdomains as well
+    preload: true              // Add to HSTS preload list (optional)
+}));
+
+// Enable X-Frame-Options header to prevent clickjacking
+app.use(helmet.frameguard({ action: 'sameorigin' }));
+//app.use(helmet.frameguard({ action: 'deny' }));
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api', usersartistRoutes)
