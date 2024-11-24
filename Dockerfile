@@ -22,6 +22,7 @@ RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add
 
 # Instalar Arachni y sus dependencias
 RUN apt-get update && apt-get install -y arachni
+RUN apt-get update && apt-get install -y containerd.io
 RUN gem install arachni bundler webrick
 
 # Configurar PATH para Chrome y Chromedriver
