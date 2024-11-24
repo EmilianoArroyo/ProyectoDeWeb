@@ -23,6 +23,9 @@ jobs:
     
     - name: Install containerd.io
       run: sudo apt-get install -y containerd.io
+
+    - name: Clear Held Packages
+      run: sudo apt-get --fix-broken install
   
     # 2. Set up Docker
     - name: Set up Docker
