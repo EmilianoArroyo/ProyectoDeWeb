@@ -25,6 +25,10 @@ jobs:
       run: |
         docker run --rm -v ${{ github.workspace }}/output:/output arachni/arachni /usr/local/arachni/bin/arachni_reporter /output/arachni-report.afr --reporter=html:output=/output
 
+    - name: Rename Report File
+      run: |
+        mv ./output/*.html.zip ./output/arachni-report.html.zip
+
     - name: List files in output
       run: ls -l ./output
 
@@ -32,8 +36,5 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: arachni-report-zip
-        path: ./output/*.html.zip
+        path: ./output/arachni-report.html.zip
 
-    - name: Validate Scan Results
-      run: |
-        echo "Skipping validation as the report is in a compressed format."
