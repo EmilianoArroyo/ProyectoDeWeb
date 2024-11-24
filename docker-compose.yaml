@@ -3,7 +3,7 @@ services:
     image: custom-arachni
     ports:
       - "9293:9292"  # Cambia el puerto si es necesario
-    command: "arachni http://172.18.0.2:9292"
+    command: "arachni http://arachni:9292"
 
   arachni:
     image: arachni/arachni
