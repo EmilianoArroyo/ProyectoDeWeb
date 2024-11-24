@@ -18,11 +18,21 @@ jobs:
 
       - name: Run Arachni scan
         run: |
-          docker run --rm -v $(pwd)/output:/output arachni/arachni /usr/local/arachni/bin/arachni https://cybermusik.onrender.com/ --report-save-path=/output/arachni-report.afr
+          docker run --rm -v $(pwd)/output:/output arachni/arachni \
+            /usr/local/arachni/bin/arachni https://cybermusik.onrender.com/views/logins/login.html \
+            --output-file=/output/arachni-report.afr
+
+      - name: Check output after Arachni scan
+        run: ls -la ./output
 
       - name: Convert Arachni report to HTML
         run: |
-          docker run --rm -v $(pwd)/output:/output arachni/arachni /usr/local/arachni/bin/arachni_reporter /output/arachni-report.afr --reporter=html:output=/output
+          docker run --rm -v $(pwd)/output:/output arachni/arachni \
+            /usr/local/arachni/bin/arachni_reporter /output/arachni-report.afr \
+            --reporter=html:output=/output
+
+      - name: Check output after conversion
+        run: ls -la ./output
 
       - name: Rename HTML report
         run: mv ./output/*.html.zip ./output/arachni-report.html.zip
