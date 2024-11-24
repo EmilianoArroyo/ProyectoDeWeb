@@ -14,23 +14,29 @@ jobs:
     - name: Check out the code
       uses: actions/checkout@v3
 
+    - name: Prepare output directory
+      run: mkdir -p output
+
     - name: Run Arachni Fuzzing
       run: |
-        docker run --rm -v $(pwd):/output arachni/arachni /usr/local/arachni/bin/arachni http://arachni:9292/d/users/sign_in --report-save-path=/output/arachni-report.afr
+        docker run --rm -v $(pwd)/output:/output arachni/arachni /usr/local/arachni/bin/arachni http://arachni:9292/d/users/sign_in --report-save-path=/output/arachni-report.afr
 
     - name: Convert Report to HTML
       run: |
-        docker run --rm -v $(pwd):/output arachni/arachni /usr/local/arachni/bin/arachni_reporter /output/arachni-report.afr --reporter=html:output=/output/arachni-report.html
+        docker run --rm -v $(pwd)/output:/output arachni/arachni /usr/local/arachni/bin/arachni_reporter /output/arachni-report.afr --reporter=html:output=/output/arachni-report.html
+
+    - name: Debug output directory
+      run: ls -l ./output
 
     - name: Upload scan report
       uses: actions/upload-artifact@v3
       with:
         name: arachni-report
-        path: arachni-report.html
+        path: output/arachni-report.html
 
     - name: Validate Scan Results
       run: |
-        if grep -q "High" /output/arachni-report.html; then
+        if grep -q "High" output/arachni-report.html; then
           echo "Critical vulnerabilities detected!"
           exit 1
         else
