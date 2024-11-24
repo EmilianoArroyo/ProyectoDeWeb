@@ -16,7 +16,7 @@ jobs:
 
     - name: Run Arachni Fuzzing
       run: |
-        docker run --rm -v $(pwd):/output arachni/arachni /usr/local/arachni/bin/arachni http://arachni:9292/d/users/sign_in --output /output/arachni-report.afr
+        docker run --rm -v $(pwd):/output arachni/arachni /usr/local/arachni/bin/arachni http://arachni:9292/d/users/sign_in --report-save-path=/output/arachni-report.afr
 
     - name: Convert Report to HTML
       run: |
