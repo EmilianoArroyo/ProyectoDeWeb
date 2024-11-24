@@ -23,7 +23,11 @@ jobs:
     - name: Run Arachni Fuzzing
       run: |
         # Run Arachni fuzzing on the /d/users/sign_in endpoint of the web service
-        docker run --rm -v $(pwd):/output custom-arachni /opt/arachni/bin/arachni http://172.18.0.2:9292/d/users/sign_in --output /output/arachni-report.afr
+        docker run --rm -v $(pwd):/output custom-arachni /opt/arachni/bin/arachni http://arachni:9292/d/users/sign_in --output /output/arachni-report.afr
+
+    - name: Convert Report to HTML
+      run: |
+        docker run --rm -v $(pwd):/output custom-arachni /opt/arachni/bin/arachni_reporter /output/arachni-report.afr --reporter=html:output=/output/arachni-report.html
 
     - name: Upload scan report
       uses: actions/upload-artifact@v3
@@ -31,3 +35,11 @@ jobs:
         name: arachni-report
         path: arachni-report.afr
 
+    - name: Validate Scan Results
+      run: |
+        if grep -q "High" /output/arachni-report.html; then
+          echo "Critical vulnerabilities detected!"
+          exit 1
+        else
+          echo "No critical vulnerabilities detected."
+        fi
