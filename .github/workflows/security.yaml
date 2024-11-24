@@ -18,31 +18,17 @@ jobs:
 
       - name: Run Arachni scan
         run: |
-          docker run --rm -v $(pwd)/output:/output arachni/arachni \
-            /usr/local/arachni/bin/arachni https://cybermusik.onrender.com/ \
-            --output-file=/output/arachni-report.afr
-
-      - name: Check output after Arachni scan
-        run: ls -la ./output
+          docker run --rm -v $(pwd)/output:/output arachni/arachni https://cybermusik.onrender.com/ --report-save-path=/output/arachni-report.afr
 
       - name: Convert Arachni report to HTML
         run: |
-          docker run --rm -v $(pwd)/output:/output arachni/arachni \
-            /usr/local/arachni/bin/arachni_reporter /output/arachni-report.afr \
-            --reporter=html:output=/output
+          docker run --rm -v $(pwd)/output:/output arachni/arachni /usr/local/arachni/bin/arachni_reporter /output/arachni-report.afr --reporter=html:output=/output/report.html.zip
 
-      - name: Check output after conversion
-        run: ls -la ./output
-
-      - name: Rename HTML report
-        run: |
-          # Identificar y renombrar el archivo generado
-          REPORT_NAME=$(ls ./output | grep '.html.zip')
-          echo "Found report: $REPORT_NAME"
-          mv "./output/$REPORT_NAME" ./output/arachni-report.html.zip
+      - name: List output files
+        run: ls -l ./output
 
       - name: Upload HTML report
         uses: actions/upload-artifact@v3
         with:
           name: arachni-report
-          path: ./output/arachni-report.html.zip
+          path: ./output/report.html.zip
