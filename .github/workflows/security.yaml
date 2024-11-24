@@ -19,8 +19,8 @@ jobs:
       - name: Run Arachni scan
         run: |
           docker run --rm -v $(pwd)/output:/output arachni/arachni \
-            /usr/local/arachni/bin/arachni https://cybermusik.onrender.com/views/logins/login.html \
-            --report-save-path=/output/arachni-report.afr
+            /usr/local/arachni/bin/arachni https://cybermusik.onrender.com/ \
+            --output-file=/output/arachni-report.afr
 
       - name: Check output after Arachni scan
         run: ls -la ./output
@@ -35,7 +35,11 @@ jobs:
         run: ls -la ./output
 
       - name: Rename HTML report
-        run: mv ./output/*.html.zip ./output/arachni-report.html.zip
+        run: |
+          # Identificar y renombrar el archivo generado
+          REPORT_NAME=$(ls ./output | grep '.html.zip')
+          echo "Found report: $REPORT_NAME"
+          mv "./output/$REPORT_NAME" ./output/arachni-report.html.zip
 
       - name: Upload HTML report
         uses: actions/upload-artifact@v3
