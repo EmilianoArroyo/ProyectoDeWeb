@@ -13,33 +13,25 @@ jobs:
     steps:
     - name: Check out the code
       uses: actions/checkout@v3
-      with:
-        node-version: '20.17.0'
 
-    - name: Update Package List
-      run: sudo apt-get update
-
-    - name: Install Arachni
-      run: sudo apt-get install -y arachni
-
-    - name: Build Arachni Docker Image
+    - name: Set up Docker
       run: |
-        docker build -t custom-arachni .  # Build your custom Arachni image from the Dockerfile
+        sudo apt-get update
+        sudo apt-get install -y docker.io
 
     - name: Run Arachni Fuzzing
       run: |
-        # Run Arachni fuzzing on the /d/users/sign_in endpoint of the web service
-        docker run --rm -v $(pwd):/output custom-arachni /opt/arachni/bin/arachni http://arachni:9292/d/users/sign_in --output /output/arachni-report.afr
+        docker run --rm -v $(pwd):/output arachni/arachni /usr/local/arachni/bin/arachni http://arachni:9292/d/users/sign_in --output /output/arachni-report.afr
 
     - name: Convert Report to HTML
       run: |
-        docker run --rm -v $(pwd):/output custom-arachni /opt/arachni/bin/arachni_reporter /output/arachni-report.afr --reporter=html:output=/output/arachni-report.html
+        docker run --rm -v $(pwd):/output arachni/arachni /usr/local/arachni/bin/arachni_reporter /output/arachni-report.afr --reporter=html:output=/output/arachni-report.html
 
     - name: Upload scan report
       uses: actions/upload-artifact@v3
       with:
         name: arachni-report
-        path: arachni-report.afr
+        path: arachni-report.html
 
     - name: Validate Scan Results
       run: |
