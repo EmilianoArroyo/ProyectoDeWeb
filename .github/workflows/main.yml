@@ -21,8 +21,6 @@ jobs:
             /usr/local/arachni/bin/arachni https://cybermusik.onrender.com/
 
       # Paso 3: Esperar para inspeccionar manualmente o procesar datos
-      - name: Keep container running for inspection
-        run: sleep 3600 # Mantiene el contenedor activo por 1 hora
 
       # Paso 4: Subir la carpeta output como artifact para descargarla
       - name: Upload Output
