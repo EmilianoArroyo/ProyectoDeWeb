@@ -9,32 +9,26 @@ on:
 jobs:
   security-scan:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Check out the code
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Prepare output directory
-      run: mkdir -p output
+      - name: Create output directory
+        run: mkdir -p output
 
-    - name: Run Arachni Fuzzing
-      run: |
-        docker run --rm -v ${{ github.workspace }}/output:/output arachni/arachni /usr/local/arachni/bin/arachni http://arachni:9292/d/users/sign_in --report-save-path=/output/arachni-report.afr
+      - name: Run Arachni scan
+        run: |
+          docker run --rm -v $(pwd)/output:/output arachni/arachni /usr/local/arachni/bin/arachni https://cybermusik.onrender.com/ --report-save-path=/output/arachni-report.afr
 
-    - name: Convert Report to HTML (Compressed)
-      run: |
-        docker run --rm -v ${{ github.workspace }}/output:/output arachni/arachni /usr/local/arachni/bin/arachni_reporter /output/arachni-report.afr --reporter=html:output=/output
+      - name: Convert Arachni report to HTML
+        run: |
+          docker run --rm -v $(pwd)/output:/output arachni/arachni /usr/local/arachni/bin/arachni_reporter /output/arachni-report.afr --reporter=html:output=/output
 
-    - name: Rename Report File
-      run: |
-        mv ./output/*.html.zip ./output/arachni-report.html.zip
+      - name: Rename HTML report
+        run: mv ./output/*.html.zip ./output/arachni-report.html.zip
 
-    - name: List files in output
-      run: ls -l ./output
-
-    - name: Upload scan report (ZIP)
-      uses: actions/upload-artifact@v3
-      with:
-        name: arachni-report-zip
-        path: ./output/arachni-report.html.zip
-
+      - name: Upload HTML report
+        uses: actions/upload-artifact@v3
+        with:
+          name: arachni-report
+          path: ./output/arachni-report.html.zip
