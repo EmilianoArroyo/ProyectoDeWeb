@@ -16,6 +16,9 @@ jobs:
       with:
         node-version: '20.17.0'
 
+    - name: Install Arachni
+      run: sudo apt-get install -y arachni
+
     - name: Build Arachni Docker Image
       run: |
         docker build -t custom-arachni .  # Build your custom Arachni image from the Dockerfile
