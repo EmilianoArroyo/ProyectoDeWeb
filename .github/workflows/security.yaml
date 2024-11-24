@@ -28,9 +28,18 @@ jobs:
             /usr/local/arachni/bin/arachni_reporter /output/arachni-report.afr \
             --reporter=html:output=/output
 
+      - name: List Output Files
+        run: |
+          echo "Files in output directory:"
+          ls -la ./output
+
       - name: Rename HTML report
         run: |
-          REPORT_NAME=$(ls ./output | grep '.html.zip')
+          REPORT_NAME=$(ls ./output | grep -m 1 '.html.zip' || echo "")
+          if [ -z "$REPORT_NAME" ]; then
+            echo "Error: No HTML report found!" >&2
+            exit 1
+          fi
           echo "Found report: $REPORT_NAME"
           mv "./output/$REPORT_NAME" ./output/arachni-report.html.zip
 
