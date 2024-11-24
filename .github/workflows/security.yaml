@@ -20,7 +20,7 @@ jobs:
         run: |
           docker run --rm -v $(pwd)/output:/output arachni/arachni \
             /usr/local/arachni/bin/arachni https://cybermusik.onrender.com/views/logins/login.html \
-            --report-save-path=/output/arachni-report.html --reporters-list=html
+            --report-save-path=/output/arachni-report.html
 
       - name: List Output Files
         run: |
