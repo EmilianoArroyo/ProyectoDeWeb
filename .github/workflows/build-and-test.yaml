@@ -15,6 +15,15 @@ jobs:
     - name: Check out the repository
       uses: actions/checkout@v3  # Actualiza a la versión más reciente
 
+    - name: Remove conflicting package
+      run: sudo apt-get remove -y containerd
+    
+    - name: Update package lists
+      run: sudo apt-get update
+    
+    - name: Install containerd.io
+      run: sudo apt-get install -y containerd.io
+  
     # 2. Set up Docker
     - name: Set up Docker
       run: |
