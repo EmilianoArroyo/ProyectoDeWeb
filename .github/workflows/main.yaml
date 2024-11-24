@@ -43,3 +43,6 @@ jobs:
             -d '{"serviceId": "srv-cspda056l47c73es4t8g"}' \
             https://api.render.com/v1/services/srv-cspda056l47c73es4t8g/deploys
 
+      - name: Verify Deployment
+        run: |
+          curl -I https://cybermusik.onrender.com
