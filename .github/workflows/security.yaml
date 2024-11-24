@@ -28,10 +28,6 @@ jobs:
     - name: List files in output
       run: ls -l ./output
 
-    - name: Unzip HTML report
-      if: always()
-      run: unzip "./output/*.html.zip" -d ./output
-
     - name: Debug output directory after unzip
       run: ls -l ./output
 
