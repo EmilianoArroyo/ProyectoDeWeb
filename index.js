@@ -191,7 +191,6 @@ app.use(helmet({
 }));
 
 
-
 // Seguridad adicional
 app.use(helmet.hsts({
   maxAge: 31536000,
@@ -206,7 +205,7 @@ app.use('/fonts', express.static(path.join(__dirname, 'fonts')));
 // Limitar las tasas de solicitudes
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutos
-  max: 1000, // Limitar a 1000 solicitudes por IP
+  max: 2000, // Limitar a 1000 solicitudes por IP
   message: "Demasiadas solicitudes desde esta IP, por favor intente de nuevo más tarde"
 });
 app.use(limiter);
@@ -286,6 +285,5 @@ app.use((err, req, res, next) => {
   });
 });
 
-<meta http-equiv="Content-Security-Policy" content="script-src 'self' https://ajax.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://code.jquery.com https://maxcdn.bootstrapcdn.com;">
 
   
