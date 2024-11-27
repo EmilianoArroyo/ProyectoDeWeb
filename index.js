@@ -285,5 +285,3 @@ app.use((err, req, res, next) => {
   });
 });
 
-
- <meta http-equiv="Content-Security-Policy" content="script-src 'self' https://ajax.googleapis.com https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://code.jquery.com https://maxcdn.bootstrapcdn.com https://cdn.ckeditor.com https://unpkg.com;"> 
