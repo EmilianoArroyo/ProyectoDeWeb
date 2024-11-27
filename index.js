@@ -197,7 +197,7 @@ app.use('/fonts', express.static(path.join(__dirname, 'fonts')));
 // Limitar las tasas de solicitudes
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutos
-  max: 100, // Limitar a 100 solicitudes por IP
+  max: 1000, // Limitar a 1000 solicitudes por IP
   message: "Demasiadas solicitudes desde esta IP, por favor intente de nuevo más tarde"
 });
 app.use(limiter);
