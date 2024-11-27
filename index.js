@@ -159,24 +159,24 @@ app.use(helmet({
         "https://cdn.jsdelivr.net",
         "https://cdnjs.cloudflare.com",
         "https://code.jquery.com",
-        "https://maxcdn.bootstrapcdn.com"
+        "https://maxcdn.bootstrapcdn.com",
+        "https://cdn.ckeditor.com", // Permitir CKEditor
+        "https://unpkg.com"         // Permitir Masonry desde unpkg
       ],
       styleSrc: [
         "'self'",
-        "'unsafe-inline'",
-        "https://maxcdn.bootstrapcdn.com",
-        "https://fonts.googleapis.com",
+        "'unsafe-inline'", 
+        "https://maxcdn.bootstrapcdn.com", // Permitir Bootstrap
+        "https://fonts.googleapis.com",    // Fuentes de Google
         "https://cdn.jsdelivr.net",
-        "https://cdnjs.cloudflare.com",
-        "https://maxcdn.bootstrapcdn.com"
+        "https://cdnjs.cloudflare.com"
       ],
       imgSrc: ["'self'", "data:", "https://source.unsplash.com"],
       fontSrc: [
         "'self'",
-        "https://fonts.gstatic.com",
+        "https://fonts.gstatic.com", // Permitir fuentes desde Google
         "https://cdn.jsdelivr.net",
-        "https://cdnjs.cloudflare.com",
-        "https://maxcdn.bootstrapcdn.com"
+        "https://cdnjs.cloudflare.com"
       ],
       connectSrc: ["'self'"],
       objectSrc: ["'none'"],
@@ -184,6 +184,7 @@ app.use(helmet({
     },
   },
 }));
+
 
 
 // Seguridad adicional
