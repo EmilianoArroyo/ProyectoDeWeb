@@ -158,7 +158,8 @@ app.use(helmet({
         "https://ajax.googleapis.com",
         "https://cdn.jsdelivr.net",
         "https://cdnjs.cloudflare.com",
-        "https://code.jquery.com"
+        "https://code.jquery.com",
+        "https://maxcdn.bootstrapcdn.com"
       ],
       styleSrc: [
         "'self'",
@@ -166,14 +167,16 @@ app.use(helmet({
         "https://maxcdn.bootstrapcdn.com",
         "https://fonts.googleapis.com",
         "https://cdn.jsdelivr.net",
-        "https://cdnjs.cloudflare.com"
+        "https://cdnjs.cloudflare.com",
+        "https://maxcdn.bootstrapcdn.com"
       ],
       imgSrc: ["'self'", "data:", "https://source.unsplash.com"],
       fontSrc: [
         "'self'",
         "https://fonts.gstatic.com",
         "https://cdn.jsdelivr.net",
-        "https://cdnjs.cloudflare.com"  // Agregar este dominio para fuentes de Font Awesome
+        "https://cdnjs.cloudflare.com",
+        "https://maxcdn.bootstrapcdn.com"
       ],
       connectSrc: ["'self'"],
       objectSrc: ["'none'"],
