@@ -151,26 +151,18 @@ app.use(mongoSanitize());
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
+      scriptSrcAttr: ["'unsafe-inline'"],
       defaultSrc: ["'self'"],
       scriptSrc: [
         "'self'",
         "https://ajax.googleapis.com",
         "https://cdn.jsdelivr.net",
         "https://cdnjs.cloudflare.com",
-        "https://code.jquery.com",
-        "https://maxcdn.bootstrapcdn.com",
-        "https://cdn.ckeditor.com",  // Permitir CKEditor
-        "https://unpkg.com"          // Permitir Masonry
+        "https://code.jquery.com"
       ],
-      scriptSrcElem: [
-        "'self'", 
-        "https://cdn.ckeditor.com",  // Permitir CKEditor desde CDN
-        "https://unpkg.com"          // Permitir Masonry desde unpkg
-      ],
-      scriptSrcAttr: ["'unsafe-inline'"], // Permitir atributos 'unsafe-inline' para scripts en línea
       styleSrc: [
         "'self'",
-        "'unsafe-inline'", // Asegura que los estilos en línea sean permitidos
+        "'unsafe-inline'",
         "https://maxcdn.bootstrapcdn.com",
         "https://fonts.googleapis.com",
         "https://cdn.jsdelivr.net",
@@ -181,7 +173,7 @@ app.use(helmet({
         "'self'",
         "https://fonts.gstatic.com",
         "https://cdn.jsdelivr.net",
-        "https://cdnjs.cloudflare.com"
+        "https://cdnjs.cloudflare.com"  // Agregar este dominio para fuentes de Font Awesome
       ],
       connectSrc: ["'self'"],
       objectSrc: ["'none'"],
@@ -189,7 +181,6 @@ app.use(helmet({
     },
   },
 }));
-
 
 // Seguridad adicional
 app.use(helmet.hsts({
