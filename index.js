@@ -151,7 +151,6 @@ app.use(mongoSanitize());
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
-      scriptSrcAttr: ["'unsafe-inline'"],
       defaultSrc: ["'self'"],
       scriptSrc: [
         "'self'",
@@ -160,21 +159,27 @@ app.use(helmet({
         "https://cdnjs.cloudflare.com",
         "https://code.jquery.com",
         "https://maxcdn.bootstrapcdn.com",
-        "https://cdn.ckeditor.com", // Permitir CKEditor
-        "https://unpkg.com"         // Permitir Masonry desde unpkg
+        "https://cdn.ckeditor.com",  // Permitir CKEditor
+        "https://unpkg.com"          // Permitir Masonry
       ],
+      scriptSrcElem: [
+        "'self'", 
+        "https://cdn.ckeditor.com",  // Permitir CKEditor desde CDN
+        "https://unpkg.com"          // Permitir Masonry desde unpkg
+      ],
+      scriptSrcAttr: ["'unsafe-inline'"], // Permitir atributos 'unsafe-inline' para scripts en línea
       styleSrc: [
         "'self'",
-        "'unsafe-inline'", 
-        "https://maxcdn.bootstrapcdn.com", // Permitir Bootstrap
-        "https://fonts.googleapis.com",    // Fuentes de Google
+        "'unsafe-inline'", // Asegura que los estilos en línea sean permitidos
+        "https://maxcdn.bootstrapcdn.com",
+        "https://fonts.googleapis.com",
         "https://cdn.jsdelivr.net",
         "https://cdnjs.cloudflare.com"
       ],
       imgSrc: ["'self'", "data:", "https://source.unsplash.com"],
       fontSrc: [
         "'self'",
-        "https://fonts.gstatic.com", // Permitir fuentes desde Google
+        "https://fonts.gstatic.com",
         "https://cdn.jsdelivr.net",
         "https://cdnjs.cloudflare.com"
       ],
