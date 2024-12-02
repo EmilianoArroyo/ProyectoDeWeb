@@ -3,28 +3,42 @@ name: CyberMusik
 on:
   push:
     branches:
-      - main  # Only deploy from the main branch
+      - main  # Desplegar solo desde la rama principal
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
-      # 1. Check out the code
+      # 1. Clonar el repositorio
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # 2. Set up Node.js
+      # 2. Configurar Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20.17.0'
 
-      # 3. Install dependencies
+      # 3. Instalar dependencias
       - name: Install dependencies
         run: npm install
 
-      # 5. Set up environment variables securely
+      # 4. Análisis de seguridad (SAST)
+      - name: Run SAST with ESLint
+        run: npx eslint . --ext .js,.jsx
+
+      # 5. Análisis de vulnerabilidades (SCA)
+      - name: Run SCA with npm audit
+        run: npm audit --audit-level=moderate
+
+      # 6. Escaneo de secretos
+      - name: Run Secret Scanning with TruffleHog
+        uses: trufflesecurity/trufflehog@v3
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      # 7. Configurar variables de entorno
       - name: Set up environment variables
         env:
           mongoUrl: ${{ secrets.mongoUrl }}
@@ -32,7 +46,7 @@ jobs:
           echo "mongoUrl=$mongoUrl" >> .env
           echo "PORT=3000" >> .env
 
-      # 6. Deploy to Render via API
+      # 8. Desplegar en Render mediante API
       - name: Deploy to Render
         env:
           RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
@@ -43,6 +57,7 @@ jobs:
             -d '{"serviceId": "srv-cspda056l47c73es4t8g"}' \
             https://api.render.com/v1/services/srv-cspda056l47c73es4t8g/deploys
 
+      # 9. Verificar despliegue
       - name: Verify Deployment
         run: |
           curl -I https://cybermusik.onrender.com
