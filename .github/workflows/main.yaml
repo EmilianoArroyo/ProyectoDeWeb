@@ -32,13 +32,16 @@ jobs:
       - name: Run SCA with npm audit
         run: npm audit --audit-level=moderate
 
-      # 6. Escaneo de secretos
-      - name: Run Secret Scanning with TruffleHog
-        uses: trufflesecurity/trufflehog@v2.2.1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+      # 6. Instalar TruffleHog
+      - name: Install TruffleHog
+        run: pip install trufflehog
 
-      # 7. Configurar variables de entorno
+      # 7. Escaneo de secretos con TruffleHog
+      - name: Run Secret Scanning with TruffleHog
+        run: |
+          trufflehog --json https://github.com/EmilianoArroyo/ProyectoDeWeb --allow-env
+
+      # 8. Configurar variables de entorno
       - name: Set up environment variables
         env:
           mongoUrl: ${{ secrets.mongoUrl }}
@@ -46,7 +49,7 @@ jobs:
           echo "mongoUrl=$mongoUrl" >> .env
           echo "PORT=3000" >> .env
 
-      # 8. Desplegar en Render mediante API
+      # 9. Desplegar en Render mediante API
       - name: Deploy to Render
         env:
           RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
@@ -57,7 +60,7 @@ jobs:
             -d '{"serviceId": "srv-cspda056l47c73es4t8g"}' \
             https://api.render.com/v1/services/srv-cspda056l47c73es4t8g/deploys
 
-      # 9. Verificar despliegue
+      # 10. Verificar despliegue
       - name: Verify Deployment
         run: |
           curl -I https://cybermusik.onrender.com
