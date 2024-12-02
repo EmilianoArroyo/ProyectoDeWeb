@@ -25,7 +25,7 @@ jobs:
 
       - name: Run TruffleHog to scan for secrets
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # El token es proporcionado automáticamente por GitHub
         run: |
-          trufflehog --json https://github.com/EmilianoArroyo/ProyectoDeWeb
+          trufflehog --json --allow-env https://github.com/EmilianoArroyo/ProyectoDeWeb
 
