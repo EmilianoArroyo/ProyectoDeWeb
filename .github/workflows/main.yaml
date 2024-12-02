@@ -34,7 +34,7 @@ jobs:
 
       # 6. Escaneo de secretos
       - name: Run Secret Scanning with TruffleHog
-        uses: trufflesecurity/trufflehog@v3
+        uses: trufflesecurity/trufflehog@v2.2.1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
