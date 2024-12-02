@@ -34,10 +34,25 @@ jobs:
             --ext .js,.jsx,.ts,.tsx \
             --format @microsoft/eslint-formatter-sarif \
             --output-file eslint-results.sarif
+          ls -al # List files to verify that eslint-results.sarif exists
         continue-on-error: true
 
       - name: Upload analysis results to GitHub
+        if: fileExists('eslint-results.sarif')
         uses: github/codeql-action/upload-sarif@v3
         with:
           sarif_file: eslint-results.sarif
           wait-for-processing: true
+
+# Helper function to check if the file exists
+jobs:
+  fileExists:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if the file exists
+        run: |
+          if [ ! -f "eslint-results.sarif" ]; then
+            echo "eslint-results.sarif file not found!"
+            exit 1
+          fi
+
