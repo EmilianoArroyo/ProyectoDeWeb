@@ -28,13 +28,12 @@ jobs:
       - name: Run ESLint
         env:
           SARIF_ESLINT_IGNORE_SUPPRESSED: "true"
-        run: |
-          npx eslint . \
-            --config .eslintrc.js \
-            --ext .js,.jsx,.ts,.tsx \
-            --format @microsoft/eslint-formatter-sarif \
-            --output-file eslint-results.sarif
-          ls -al # List files to verify that eslint-results.sarif exists
+        run: npx eslint . \
+          --config .github/.eslintrc.js \
+          --ext .js,.jsx,.ts,.tsx \
+          --format @microsoft/eslint-formatter-sarif \
+          --output-file eslint-results.sarif
+
 
       - name: Upload analysis results to GitHub
         if: ${{ success() && steps.run-eslint.outputs.file == 'eslint-results.sarif' }}
