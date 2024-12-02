@@ -27,4 +27,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          trufflehog git https://github.com/EmilianoArroyo/ProyectoDeWeb --json --allow-env
+          trufflehog --json https://github.com/EmilianoArroyo/ProyectoDeWeb
+
